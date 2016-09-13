@@ -1,0 +1,208 @@
+// JScript source code
+
+// stores the reference to the XMLHttpRequest object
+var xmlHttp = createXmlHttpRequestObject();
+var table;
+var td;
+
+// retrieves the XMLHttpRequest object
+function createXmlHttpRequestObject() {
+    // will store the reference to the XMLHttpRequest object
+    var xmlHttp;
+    // if running Internet Explorer
+    if (window.ActiveXObject) {
+        try {
+            xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        catch (e) {
+            xmlHttp = false;
+        }
+    }
+    // if running Mozilla or other browsers
+    else {
+        try {
+            xmlHttp = new XMLHttpRequest();
+        }
+        catch (e) {
+            xmlHttp = false;
+        }
+    }
+    // return the created object or display an error message
+    if (!xmlHttp)
+        alert("Error creating the XMLHttpRequest object.");
+    else
+        return xmlHttp;
+}
+
+// make asynchronous HTTP request using the XMLHttpRequest object
+function process() {
+    // proceed only if the xmlHttp object isn't busy
+    if (xmlHttp.readyState == 4 || xmlHttp.readyState == 0) {
+        // retrieve the name typed by the user on the form
+//        name = encodeURIComponent(document.getElementById("myName").value);
+        // execute the quickstart.php page from the server
+        xmlHttp.open("GET", "activators.php?id=all", true);
+        // define the method to handle server responses
+        xmlHttp.onreadystatechange = handleServerResponse;
+        // make the server request
+        xmlHttp.send(null);
+    }
+    else
+    // if the connection is busy, try again after one second
+        setTimeout('process()', 1000);
+}
+
+// executed automatically when a message is received from the server
+function handleServerResponse() {
+    var txt,x,xx,i;
+    // move forward only if the transaction has completed
+    if (xmlHttp.readyState == 4) {
+        // status of 200 indicates the transaction completed successfully
+        if (xmlHttp.status == 200) {
+            txt = "<table  id='activators'><tr><th id='acthead1'>Id</th><th id='acthead2'>Ime</th><th id='acthead3'>Stanje</th></tr>";
+            // extract the XML retrieved from the server
+//            xmlResponse = xmlHttp.responseXML;
+            // obtain the document element (the root element) of the XML structure
+//            xmlDocumentElement = xmlResponse.documentElement;
+            // get the text message, which is in the first child of
+            // the the document element
+//            response = xmlDocumentElement.firstChild.data;
+            // update the client display using the data received from the server
+
+            x = xmlHttp.responseXML.documentElement.getElementsByTagName("activator");
+            for (i = 0; i < x.length; i++) {
+                txt = txt + "<tr>";
+                xx = x[i].getElementsByTagName("id");
+                {
+                    try {
+                        txt = txt + "<td id='tdid" + i +"'>" + xx[0].firstChild.nodeValue + "</td>";
+                    }
+                    catch (er) {
+                        txt = txt + "<td>&nbsp;</td>";
+                    }
+                }
+                xx = x[i].getElementsByTagName("name");
+                {
+                    try {
+                        txt = txt + "<td id='tdname" + i +"'>" + xx[0].firstChild.nodeValue + "</td>";
+                    }
+                    catch (er) {
+                        txt = txt + "<td>&nbsp;</td>";
+                    }
+                }
+                xx = x[i].getElementsByTagName("state");
+                {
+	            if(xx[0].firstChild.nodeValue & 1 == 1)
+			state="ON";
+		    else
+			state="OFF";
+                    try {
+                        txt = txt + "<td id='tdstate" + i +"'onclick=\"clickHandler(3," + i + ")\">" + state + "</td>";
+                    }
+                    catch (er) {
+                        txt = txt + "<td>&nbsp;</td>";
+                    }
+
+                }
+                txt = txt + "</tr>";
+            }
+            txt = txt + "</table>";
+  //          alert("Hello! I am an alert box!!");
+            document.getElementById("myDivElement").innerHTML = txt;
+            var t = document.getElementById("activators");
+
+            t.className = "Table1";
+  //          t.tHead = document.getElementById("acthead1");
+  //          t.tHead.className = "TableHead1";
+  //          var j;
+  //          for (i = 0; i < t.rows.length; i++)
+  //              for (j = 0; j < t.rows[i].cells.length; j++)
+  //                  t.rows[i].cells[j].className = "TableContent1";
+
+        
+            var th = document.getElementById("acthead1");
+            th.className = "TableHead1";
+            th = document.getElementById("acthead2");
+            th.className = "TableHead1";
+            th = document.getElementById("acthead3");
+            th.className = "TableHead1";
+            td = document.getElementById("tdname0");
+            td.className = "TableContent1";
+            td = document.getElementById("tdname1");
+            td.className = "TableContent1";
+            td = document.getElementById("tdname2");
+            td.className = "TableContent1";
+            td = document.getElementById("tdname3");
+            td.className = "TableContent1";
+            td = document.getElementById("tdname4");
+            td.className = "TableContent1";
+            td = document.getElementById("tdname5");
+            td.className = "TableContent1";
+            td = document.getElementById("tdid0");
+            td.className = "TableContent1";
+            td = document.getElementById("tdid1");
+            td.className = "TableContent1";
+            td = document.getElementById("tdid2");
+            td.className = "TableContent1";
+            td = document.getElementById("tdid3");
+            td.className = "TableContent1";
+            td = document.getElementById("tdid4");
+            td.className = "TableContent1";
+            td = document.getElementById("tdid5");
+            td.className = "TableContent1";
+            td = document.getElementById("tdstate0");
+            td.className = "TableContent1";
+            td = document.getElementById("tdstate1");
+            td.className = "TableContent1";
+            td = document.getElementById("tdstate2");
+            td.className = "TableContent1";
+            td = document.getElementById("tdstate3");
+            td.className = "TableContent1";
+            td = document.getElementById("tdstate4");
+            td.className = "TableContent1";
+            td = document.getElementById("tdstate5");
+            td.className = "TableContent1";
+
+            for (i = 0; i < t.rows.length; i++)
+                for (j = 0; j < t.rows[i].cells.length; j++)
+		{
+      //              alert("Content: " + t.rows[i].cells[j].innerHTML);
+  //
+		    if(!t.rows[i].cells[j].onclick) t.rows[i].cells[j].onclick = clickHandler(i,j);
+		    if(t.rows[i].cells[j].innerHTML == "ON")
+                    	t.rows[i].cells[j].className = "TableContentStateON";
+		    else if(t.rows[i].cells[j].innerHTML == "OFF")
+                    	t.rows[i].cells[j].className = "TableContentStateOFF";
+		}
+
+ //           document.getElementById("myDivElement").append = populateTable(table,3,3,"test");
+
+
+            // restart sequence
+            setTimeout('process()', 1000);
+        }
+        // a HTTP status different than 200 signals an error
+        else {
+            alert("There was a problem accessing the server: " + xmlHttp.statusText);
+        }
+    }
+
+	function clickHandler(i, j) {
+	    if(i==3)
+	    alert("Cell: " + "(" + i +", " + j + ")");
+	}
+
+	function populateTable(table, rows, cells, content) {
+	    if (!table) table = document.createElement('table');
+	    for (var i = 0; i < rows; ++i) {
+	        var row = document.createElement('tr');
+        	for (var j = 0; j < cells; ++j) {
+	            row.appendChild(document.createElement('td'));
+	            row.cells[j].appendChild(document.createTextNode( content + (j + 1)));
+        	}
+	        table.appendChild(row);
+	    }
+	    return table;
+	}
+
+}

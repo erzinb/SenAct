@@ -1,0 +1,26 @@
+<html>
+<body>
+Click in any cell to view the cellIndex value.
+<table id="myTable" cols="3">
+    <tr>
+       <th id="th1" onclick="function1(this);">Header 1</th>
+       <th id="th2" onclick="function1(this);">Header 2</th>
+       <th id="th3" onclick="function1(this);">Header 3</th>
+    </tr>
+    <tr>
+       <td id="td1" onclick="function1(this);">Cell 1</td>
+       <td id="td2" onclick="function1(this);">Cell 2</td>
+       <td id="td3" onclick="function1(this);">Cell 3</td>
+    </tr>
+</table>
+<br>
+<button onclick="alert(myTable.cellPadding);">Cell Padding</button>
+<button onclick="alert(myTable.cellSpacing);">Cell Spacing</button>
+<button onclick="alert(myTable.cols);">cols</button>
+<script language="JavaScript">
+    function function1(elem) {
+        alert("Cell Index :"+ elem.cellIndex);
+    }
+</script>
+</body>
+</html>

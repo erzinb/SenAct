@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Senzorji</title>
+ <script type="text/javascript" src="sensors.js"></script>
+ <link href="styles.css" type="text/css" rel="stylesheet"/>
+</head>
+<body onload="process()">
+
+    <table style="width:30%;">
+        <tr valign="top">
+            <td align="left" >
+                <a href='senact.html'>Domov</a></td>
+            <td align="center">
+                <form action="sensors_post.php" method="post">
+                    <fieldset>
+                        <legend>Spremeni senzor</legend>
+                        <p>Id: <input id="id" type="text" name="id" class="resizing-input" size="2" onkeyup="Expand(this);"/></p>
+                        <p>Ime: <input id="name" type="text" name="name" class="resizing-input"  size="3" onkeyup="Expand(this);"/></p>
+                        <p>Tip senzorja:
+                        <select id="type" name="type">
+                            <option value="DS18B20">Digitalni senzor DS18B20</option>
+                            <option value="DS18S20">Digitalni senzor DS18S20</option>
+                            <option value="RC">Analogni senzor - recimo KTY20</option>
+                        </select></p>
+                        <p>k (samo za analogne): <input id="k" type="text" name="k" class="resizing-input" size="3" onkeyup="Expand(this);"/></p>
+                        <p>n (samo za analogne): <input id="n" type="text" name="n" class="resizing-input" size="3" onkeyup="Expand(this);"/></p>
+                        <p><input type="submit" value="Spremeni"/></p>
+                    </fieldset>
+                </form>
+            </td>
+            <td>
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+                &nbsp;</td>
+             <td>
+                 <div id="myDivElement" align="center">
+                 </div>
+             </td>
+            <td>
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+                &nbsp;</td>
+            <td>
+                &nbsp;</td>
+            <td>
+                &nbsp;</td>
+        </tr>
+    </table>
+
+</body>
+</html>

@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Aktivatorji</title>
+ <script type="text/javascript" src="activators.js"></script>
+ <link href="styles.css" type="text/css" rel="stylesheet"/>
+</head>
+<body onload="process()">
+
+    <table style="width:30%;">
+        <tr valign="top">
+            <td align="left" >
+                <a href='senact.html'>Domov</a></td>
+            <td align="center">
+                <form action="activators_post.php" method="post">
+                    <fieldset>
+                        <legend>Spremeni aktivator</legend>
+                        <p>Id: <input id="id" type="text" name="id" class="resizing-input" size="2" onkeyup="Expand(this);"/></p>
+                        <p>gpio: <input id="gpio" type="text" name="gpio" class="resizing-input" size="2" onkeyup="Expand(this);"/></p>
+                        <p>Ime: <input id="name" type="text" name="name" class="resizing-input"  size="3" onkeyup="Expand(this);"/></p>
+                        <p>Tip aktivatorja:
+                        <select id="type" name="type">
+                            <option value="0">0-Normalno</option>
+                            <option value="1">1-Impulzno</option>
+                        </select></p>
+                        <p>Širina impulza - v milisekundah: <input id="toggleTime" type="text" name="toggle_time_ms" class="resizing-input" size="3" onkeyup="Expand(this);"/></p>
+                        <p><input type="submit" value="Spremeni"/></p>
+                    </fieldset>
+                </form>
+            </td>
+            <td>
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+                &nbsp;</td>
+             <td>
+                 <div id="myDivElement" align="center">
+                 </div>
+             </td>
+            <td>
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+                &nbsp;</td>
+            <td>
+                &nbsp;</td>
+            <td>
+                &nbsp;</td>
+        </tr>
+    </table>
+
+</body>
+</html>

@@ -1,0 +1,76 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Programi</title>
+ <script type="text/javascript" src="programs.js"></script>
+ <link href="styles.css" type="text/css" rel="stylesheet"/>
+</head>
+<body onload="process()">
+
+    <table style="width:30%;">
+        <tr valign="top">
+            <td align="left" >
+                <a href='senact.html'>Domov</a></td>
+            <td align="center">
+                <form action="programs_post.php" method="post">
+                    <fieldset>
+                        <legend>Spremeni programe</legend>
+                        <p>Id: 
+                        <input id="id" name="id" class="resizing-input" size="1" onkeyup="Expand(this);"/>
+                        &emsp;&emsp;Aktivator: 
+                        <select id="activator" name="activator">
+                        </select>
+                        &emsp;&emsp;Senzor:
+                        <select id="sensor" name="sensor">
+                            <option value="null">-</option>
+                        </select></p>
+                        <p>TON: <input id="ton" type="text" name="ton" class="resizing-input" size="3" onkeyup="Expand(this);"/>
+                        &emsp;&emsp;TOFF: <input id="toff" type="text" name="toff" class="resizing-input" size="3" onkeyup="Expand(this);"/>
+                        </p>
+                        <p>Vklop (HH:MM:SS): <input id="start" type="text" name="start" class="resizing-input" size="3" onkeyup="Expand(this);"/>
+                        &emsp;&emsp;Izklop (HH:MM:SS): <input id="stop" type="text" name="stop" class="resizing-input" size="3" onkeyup="Expand(this);"/></p>
+                        <p>Mesec: <input id="mesec" type="text" name="mesec" class="resizing-input" size="3" onkeyup="Expand(this);"/>
+                        &emsp;&emsp;Teden: <input id="teden" type="text" name="teden" class="resizing-input" size="3" onkeyup="Expand(this);"/>
+                        &emsp;&emsp;Dan: <input id="dan" type="text" name="dan" class="resizing-input" size="3" onkeyup="Expand(this);"/>
+                        &emsp;&emsp;Dan vtednu:
+                        <select id="dantedna" name="dantedna">
+                            <option value="null">-</option>
+                            <option value="1">Nedelja</option>
+                            <option value="2">Ponedeljek</option>
+                            <option value="3">Torek</option>
+                            <option value="4">Sreda</option>
+                            <option value="5">Cetrtek</option>
+                            <option value="6">Petek</option>
+                            <option value="7">Sobota</option>
+                        </select></p>
+                        <p><input type="submit" name="action" value="Spremeni"/>
+                        <input type="submit" name="action" value="Dodaj"/>
+                        <input type="submit" name="action" value="Odstrani"/></p>
+                    </fieldset>
+                </form>
+            </td>
+            <td>
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+                &nbsp;</td>
+             <td>
+                 <div id="myDivElement" align="center">
+                 </div>
+             </td>
+            <td>
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+                &nbsp;</td>
+            <td>
+                &nbsp;</td>
+            <td>
+                &nbsp;</td>
+        </tr>
+    </table>
+
+</body>
+</html>

@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Aktivatorji</title>
+ <script type="text/javascript" src="settings.js"></script>
+ <link href="styles.css" type="text/css" rel="stylesheet"/>
+</head>
+<body onload="process()">
+
+    <table style="width:30%;">
+        <tr valign="top">
+            <td align="left" >
+                <a href='senact.html'>Domov</a></td>
+            <td align="center">
+                <form action="settings_post.php" method="post">
+                    <fieldset>
+                        <legend>Spremeni nastavitve</legend>
+                        <p>
+                        <select id="senactprog_active" name="senactprog_active">
+                            <option value="0">Programi deaktivirani</option>
+                            <option value="1">Programi aktivni</option>
+                        </select></p>
+                        <p>
+                        <select id="senactsen_active" name="senactsen_active">
+                            <option value="0">Senzorji deaktivirani</option>
+                            <option value="1">Senzorji aktivni</option>
+                        </select></p>
+                        <p>Čas vzorčenja: <input id="sampletime" type="text" name="sampletime" class="resizing-input"  size="3" onkeyup="Expand(this);"/></p>
+                        <p><input type="submit" value="Spremeni"/></p>
+                    </fieldset>
+                </form>
+            </td>
+            <td>
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+                &nbsp;</td>
+             <td>
+                 <div id="myDivElement" align="center">
+                 </div>
+             </td>
+            <td>
+                &nbsp;</td>
+        </tr>
+        <tr>
+            <td>
+                &nbsp;</td>
+            <td>
+                &nbsp;</td>
+            <td>
+                &nbsp;</td>
+        </tr>
+    </table>
+
+</body>
+</html>
