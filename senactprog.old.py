@@ -10,35 +10,18 @@ import os
 def ugasni(k):
 #    gpio=getgpio(k)
     global f
-    if getmanual(k) == 0:
-        f.write("%s: Ugasam %d\n" % (datetime.datetime.now(), k))
-        r = requests.get('http://boris:bs@localhost/SenAct/activators.php?id='+str(k)+'&action=write&value=0&block=1')
-    else:
-        f.write("%s: Rocni nacin - aktivator %d ne bo ugasnjen\n" % (datetime.datetime.now(), k))
+    f.write("Ugasam %d\n" % k)
     f.flush()
+    r = requests.get('http://boris:bs@localhost/SenAct/activators.php?id='+str(k)+'&action=write&value=0&block=1')
     return
 
 def prizgi(k):
 #    gpio=getgpio(k)
     global f
-    if getmanual(k) == 0:
-        f.write("%s: Prizigam %d\n" % (datetime.datetime.now(), k))
-        r = requests.get('http://boris:bs@localhost/SenAct/activators.php?id='+str(k)+'&action=write&value=1&block=1')
-    else:
-        f.write("%s: Rocni nacin - aktivator %d ne bo prizgan\n" % (datetime.datetime.now(), k))
+    f.write("Prizigam %d\n" % k)
     f.flush()
+    r = requests.get('http://boris:bs@localhost/SenAct/activators.php?id='+str(k)+'&action=write&value=1&block=1')
     return
-
-def getmanual(id):
-    global f
-    global cnx
-    cursor = cnx.cursor()
-    query = ("select manual FROM activators WHERE id="+str(id))
-    cursor.execute(query)
-    data = cursor.fetchone()
-    f.write("%s: Manual za aktivator %d postavljen na %d\n" % (datetime.datetime.now(), k, data[0]))
-    f.flush()
-    return data[0]
 
 def getgpio(id):
     global cnx

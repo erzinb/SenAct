@@ -191,6 +191,40 @@ function myClickHandler(event) {
 	//        target.innerHTML = curText;
 }
 
+function myClickHandlerManual(event) {
+	var target;
+	event = event || window.event;
+	if (event.target)
+		target = event.target;
+	else
+		target = event.srcElement;
+
+	target.firstChild.checke = !target.firstChild.checke;
+	var value = target.firstChild.checked;
+	for (i = 1; i < table.rows.length; i++) {
+		table.rows[ i ].cells[ 2 ].firstChild.checked = value;
+//		table.rows[ i ].cells[ 2 ].firstChild.checked = !table.rows[ i ].cells[ 2 ].firstChild.checked;
+//		activate("id=" + i + "&action=writemanual&value=" + table.rows[ i ].cells[ 2 ].firstChild.checked);
+	}
+	activate("id=cbManual&action=writemanual&value=" + value);
+	//        alert("Reley" + target.id + " switched to " + target.innerHTML);  //"Cell: " + "(" + i + ", " + j + ")");
+	//        target.innerHTML = curText;
+}
+
+function myClickHandlerCB(event) {
+	var target;
+	event = event || window.event;
+	if (event.target)
+		target = event.target;
+	else
+		target = event.srcElement;
+
+	var value = target.checked;
+	activate("id=" + target.id + "&action=writemanual&value=" + value);
+	//        alert("Reley" + target.id + " switched to " + target.innerHTML);  //"Cell: " + "(" + i + ", " + j + ")");
+	//        target.innerHTML = curText;
+}
+
 function myMouseOver(event) {
 	var target;
 	event = event || window.event;
@@ -233,6 +267,7 @@ function myClickHandler3(event) {
 }
 
 function populateTable(x) {
+	var c;
 	x = x[0].getElementsByTagName("activator");
 	if (x && (x.length > 0) && (!table)) {
 		table = document.createElement("table");
@@ -243,10 +278,12 @@ function populateTable(x) {
 		caption.innerHTML = "<b>Aktivatorji</b>";
 		caption.onclick = myClickHandler1;
 
-//		var c = document.createElement("INPUT");
-//		c.setAttribute("type", "checkbox");
-//		c.value = true;
-//		c.setAttribute("id", "cbManual");
+		c = document.createElement("INPUT");
+		c.setAttribute("type", "checkbox");
+		c.value = "off";
+		c.checked = false;
+		c.setAttribute("id", "cbManual");
+		c.onclick = myClickHandlerCB;
 //		pelem = document.createElement("P");
 //		tx = document.createTextNode("	Rocno:");
 //		tx.className = "Rocno";
@@ -267,6 +304,13 @@ function populateTable(x) {
 		cell = row.insertCell(1);
 		cell.innerHTML = "Stanje";
 		cell.className = "TableHead1";
+		cell = row.insertCell(2);
+		cell.innerHTML = "Rocno";
+		cell.className = "TableHead1";
+		cell.onclick = myClickHandlerManual;
+		cell.onmouseover = myMouseOver;
+		cell.onmouseout = myMouseOut;
+		cell.appendChild(c);
 	}
 	for (i = 0; i < x.length; i++) {
 		var row;
@@ -356,6 +400,32 @@ function populateTable(x) {
 		catch (er) {
 			cell.innerHTML = "&nbsp;";
 		}
+		
+		xx = x[i].getElementsByTagName("manual");
+		try {
+			if (!(row.cells[2])) {
+				cell = row.insertCell(2);
+				c = document.createElement("INPUT");
+				c.setAttribute("type", "checkbox");
+				c.setAttribute("id", i+1);
+				c.onclick = myClickHandlerCB;
+				cell.appendChild(c);
+			}
+			else {
+				cell = row.cells[2];
+				c = cell.firstChild;
+			}
+			cell.className = "TableContent1";
+//			cell.innerHTML = xx[0].firstChild.nodeValue;
+			if(xx[0].firstChild.nodeValue == "0")
+				c.checked = false;
+			else
+				c.checked = true;
+		}
+		catch (er) {
+			cell.innerHTML = "&nbsp;";
+		}
+
 	}
 
 	var divelem = document.getElementById("myDivElement");

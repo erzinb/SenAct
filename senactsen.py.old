@@ -79,14 +79,6 @@ while 1:
     else:
         query = ("select sensorId,T,k,n from sensors where type='RC'")
         cursor.execute(query)
-        sensorsDB=[]
-        for (sensorId,T1,k1,n1) in cursor:
-            sensorDB={}
-            sensorDB["sensorId"]=sensorId
-            sensorDB["T"]=T1
-            sensorDB["k"]=k1
-            sensorDB["n"]=n1
-            sensorsDB.append(sensorDB)
 #        print cursor.rowcount
         if cursor.rowcount == 0:
             t=dateime.datetime.now().isoformat()
@@ -95,11 +87,12 @@ while 1:
             insert = ("insert into sensors (sensorId,name,k,n,T,TL,TH,type,last_change) VALUES('2','T2',0.255,-58,20,20,20,'RC','"+t+"')")
             cursor1.execute(insert)
             cnx.commit()
+            cursor.execute(query)
             
-        for sensorDB in sensorsDB:
-            k[sensorDB["sensorId"]]=sensorDB["k"]
-            n[sensorDB["sensorId"]]=sensorDB["n"]
-            T[sensorDB["sensorId"]]=sensorDB["T"]
+        for (sensorId,t,kk,nn) in cursor:
+            k[sensorId]=kk
+            n[sensorId]=nn
+            T[sensorId]=t
 
         GPIO.setup(9, GPIO.IN, pull_up_down = GPIO.PUD_OFF)
         t9=datetime.datetime.now()
@@ -140,8 +133,8 @@ while 1:
                 update = ("update sensors set T=null,last_change='"+t+"' where sensorId="+id)
             else:
                 update = ("update sensors set T="+str(T[id])+",last_change='"+t+"' where sensorId="+id)
-#                insert = ("insert into sensors_history (T,sensorId,sampleTime) VALUES("+str(T[id])+",'"+id+"','"+t+"')")
-#                result=cursor1.execute(insert)
+                insert = ("insert into sensors_history (T,sensorId,sampleTime) VALUES("+str(T[id])+",'"+id+"','"+t+"')")
+                result=cursor1.execute(insert)
 #            print query
             result=cursor1.execute(update)
 #            print result
@@ -155,7 +148,6 @@ while 1:
         cnx.commit()
         
         cursor.close()
-        cursor1.close()
         cnx.close()
         delta=datetime.datetime.now()-tt-datetime.timedelta(seconds=5)+datetime.timedelta(microseconds=4100)
 #        print -delta.total_seconds()

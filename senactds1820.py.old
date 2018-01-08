@@ -1,0 +1,93 @@
+import mysql.connector
+import datetime
+import time
+import RPi.GPIO as GPIO
+import os
+from w1thermsensor import W1ThermSensor
+from w1thermsensor import UnsupportedUnitError
+from w1thermsensor import NoSensorFoundError
+from w1thermsensor import SensorNotReadyError
+
+if os.path.exists('/var/www/SenAct/senactds1820.log'):
+    os.rename('/var/www/SenAct/senactds1820.log','/var/www/SenAct/senactds1820.log.old')
+ 
+f = open('senactds1820.log','w')
+
+while 1:
+    try:
+        tt=datetime.datetime.now()
+        cnx = mysql.connector.connect(user='boris', password='tejkica00',
+                              host='127.0.0.1',
+                              database='senact')
+        cursor = cnx.cursor(buffered=True)
+        cursor1 = cnx.cursor(buffered=True)
+    except KeyboardInterrupt:
+        break
+    except mysql.connector.Error as err:
+        if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+            f.write("MySQL: Something is wrong with your user name or password\n")
+        elif err.errno == errorcode.ER_BAD_DB_ERROR:
+            f.write("MySQL: Database does not exist\n")
+        else:
+            f.write(err)
+        f.flush()
+    else:
+        query = ("select sensorId,name,type,TL,TH from sensors where type!='RC'")
+        result=cursor.execute(query)
+        ids="0"
+        try:
+            sensors = W1ThermSensor.get_available_sensors()
+            for sensor in sensors:
+                print sensor.id
+                found = False
+                ids = sensor.id
+                T = sensor.get_temperature()
+                t=datetime.datetime.now().isoformat()
+                for (sensorId,name,type,TL,TH) in cursor:
+                    print "DB: {}".format(sensorId)
+                    if sensor.id == sensorId:
+                        found = True
+                        print "Update"
+                        update = ("update sensors set T="+str(T)+",last_change='"+t+"' where sensorId='"+sensorId+"'")
+                        result=cursor1.execute(update)
+                        break
+                if not found:
+                    print "Insert"
+                    insert = ("insert into sensors (T,sensorId,name,type,TL,TH,last_change) VALUES("+str(T)+",'"+sensor.id+"','TX','"+sensor.type_name+"',0,0"+",'"+t+"')")
+                    result=cursor1.execute(insert)
+                insert = ("insert into sensors_history (T,sensorId,sampleTime) VALUES("+str(T)+",'"+sensor.id+"','"+t+"')")
+                result=cursor1.execute(insert)
+            result=cursor.execute(query)
+            for (sensorId,name,type,TL,TH) in cursor:
+                ids=sensorId
+                found = False
+                for sensor in sensors:
+                    if sensor.id == sensorId:
+                        found = True
+                        break
+                if not found:
+                    update = ("update sensors set T=null where sensorId='"+sensorId+"'")
+                    result=cursor1.execute(update)
+        except UnsupportedUnitError:
+            f.write("UnsupportedUnitError\n")
+            f.flush()
+        except NoSensorFoundError:
+            update = ("update sensors set T=null where sensorId="+ids)
+            result=cursor1.execute(update)
+            f.write("NoSensorFoundError\n")
+            f.flush()
+        except SensorNotReadyError:
+            update = ("update sensors set T=null where sensorId="+ids)
+            result=cursor1.execute(update)
+            f.write("SensorNotReadyError\n")
+            f.flush()
+    
+        cnx.commit()
+        
+        cursor.close()
+        cursor1.close()
+        cnx.close()
+        delta=datetime.datetime.now()-tt-datetime.timedelta(seconds=5)+datetime.timedelta(microseconds=4100)
+        if delta.total_seconds()<0:
+            time.sleep(-delta.total_seconds())
+f.close()        

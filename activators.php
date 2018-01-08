@@ -26,6 +26,12 @@ else
 {
 	$action = $_GET['action'];
 	$value = $_GET['value'];
+	if($action == "writemanual")
+	{
+		$sqloutput = MySqlExecManual($action, $id, $value);
+	}
+	else
+	{
 	$block = $_GET['block'];
 	$gpio = GetGpio($id);
 	$type = GetActivatorType($id);
@@ -59,11 +65,39 @@ else
 			echo "<pre>Command: " . $cmd . " executed. " . $output . "</pre>";
 		}
 	}
+	}
 }
 CleanUpDB();
 
 // close the <response> element
 echo '</response>';
+
+function MySqlExecManual($action, $id, $value)
+{
+	$conn=GetMyConnection();
+
+	if($action=="writemanual")
+	{
+		if($id=="cbManual") 
+			$sql = "UPDATE activators SET manual=$value";
+		else
+			$sql = "UPDATE activators SET manual=$value WHERE id=$id";
+		$retval1 = mysql_query( $sql, $conn );
+		if(! $retval1 )
+		{
+			$retval = "Could not update data: " . $sql . mysql_error();
+		}
+		return $retval;
+	}
+	else if($action=="readmanual")
+	{
+		$sql = "SELECT manual from activators where id=$id";
+		$retval = mysql_query( $sql, $conn );
+		$row = mysql_fetch_array($retval, MYSQL_ASSOC);
+		return $row['manual'];
+	}
+	return "Not supported";
+}
 
 function MySqlExec($action, $id, $value, $block, $type)
 {

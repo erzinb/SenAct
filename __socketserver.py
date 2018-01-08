@@ -20,15 +20,19 @@ class myThread (threading.Thread):
 
 def receiveSend(s, firstmsg, id):
     global runserver
-    s.mysend(firstmsg)
+#    s.mysend(firstmsg)
     cmd = ''
     while cmd != 'EXIT;':
         cmd = s.myreceive()
         print "%d: %s: RECEIVED(%s)" % (id, time.ctime(time.time()), cmd)
-        time.sleep(2)
+#        time.sleep(2)
         s.mysend(cmd)
         print "%d: %s: SENT(%s)" % (id, time.ctime(time.time()), cmd)
-        if cmd == 'STOPSERVER;': runserver = False
+        if cmd == 'STOPSERVER;':
+            runserver = False
+        break;
+    s.close()
+    s = None
 
 threadLock = threading.Lock()
 threads = []
@@ -58,5 +62,8 @@ while runserver:
 
 # Wait for all threads to complete
 for t in threads:
-    t.join()
+    print t.socket
+    if t.socket != None:
+        t.socket.close()
+
 print "Exiting Main Thread"
